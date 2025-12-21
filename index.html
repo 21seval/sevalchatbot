@@ -1,44 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Seval AI Chatbot</title>
 </head>
-<body style="font-family:Arial; text-align:center; background:#0f172a; color:white; padding:60px">
+<body style="margin:0; padding:0; background:#0f172a; color:white;">
 
-  <h1>AI Chatbot for Your Business 🤖</h1>
-  <p>Automate customer support and increase sales.</p>
+  <h1 style="text-align:center; padding:20px;">
+    Seval AI Chatbot – Canlı Demo
+  </h1>
 
-  <p style="margin-top:40px;">Chatbot demo will appear here 👇</p>
-<!-- BOTPRESS CHATBOT -->
-<script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
-<script>
-  window.botpressWebChat.init({
-    hostUrl: " https://cdn.botpress.cloud/webchat/v3.5/shareable.html?configUrl=https://files.bpcontent.cloud/2025/12/10/10/20251210104150-LYDGDTXZ.json",
-    messagingUrl: "https://messaging.botpress.cloud",
-    showPoweredBy: true,
-    botName: "SEVAL AI",
-    composerPlaceholder: "Type a message...",
-    themeName: "dark",
-  });
-</script>
-<!-- BOTPRESS CHATBOT IFRAME -->
-<iframe
-  src="PASTE_YOUR_SHARE_LINK_HERE"
-  style="
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 380px;
-    height: 520px;
-    border: none;
-    border-radius: 16px;
-    z-index: 9999;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  "
-  allow="microphone"
-></iframe>
+  <iframe
+    src="https://cdn.botpress.cloud/webchat/v3.5/shareable.html?configUrl=https://files.bpcontent.cloud/2025/12/10/10/20251210104150-LYDGDTXZ.json"
+    style="
+      display:block;
+      width:100%;
+      height:80vh;
+      border:none;
+    "
+    allow="microphone"
+  ></iframe>
 
 </body>
 </html>
