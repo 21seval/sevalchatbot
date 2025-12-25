@@ -6,52 +6,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      display: flex;
-      height: 100vh;
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* LEFT SIDE (CAFE INFO) */
+    body {
+      margin: 0;
+      background: #0f172a;
+      color: white;
+      height: 100vh;
+      display: flex;
+    }
+
+    /* LEFT SIDE – CAFE INFO */
     .left {
       width: 40%;
-      background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") center/cover no-repeat;
       padding: 40px;
-      box-sizing: border-box;
+      background: linear-gradient(160deg, #020617, #0f172a);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
     }
 
     .left h1 {
-      font-size: 36px;
-      margin-bottom: 10px;
+      font-size: 42px;
+      margin: 0;
     }
 
     .left p {
       font-size: 18px;
-      max-width: 400px;
+      color: #cbd5f5;
     }
 
-    /* RIGHT SIDE (CHATBOT) */
+    .left img {
+      width: 100%;
+      border-radius: 14px;
+      margin-top: 20px;
+      object-fit: cover;
+    }
+
+    /* RIGHT SIDE – CHAT */
     .right {
       width: 60%;
       position: relative;
+      background: #020617;
     }
 
-    /* CLEAR CHAT BUTTON */
+    /* CLEAR BUTTON */
     .clear-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 15px;
+      right: 15px;
       z-index: 9999;
       background: #ef4444;
       border: none;
       color: white;
-      padding: 10px 14px;
-      border-radius: 6px;
-      cursor: pointer;
+      padding: 10px 16px;
+      border-radius: 8px;
       font-weight: bold;
+      cursor: pointer;
+    }
+
+    .clear-btn:hover {
+      background: #dc2626;
     }
   </style>
 </head>
@@ -62,21 +81,25 @@
   <div class="left">
     <h1>Seval AI ☕</h1>
     <p>
-      AI-powered cafe assistant.<br>
-      Answers menu questions, opening hours,<br>
-      and helps customers 24/7.
+      Smart AI assistant for cafes.<br>
+      Answers questions, shows menu, working hours and boosts sales.
     </p>
+
+    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" alt="Cafe">
   </div>
 
   <!-- RIGHT -->
   <div class="right">
-    <button class="clear-btn" onclick="location.reload()">Clear Chat</button>
+    <button class="clear-btn" onclick="location.reload()">
+      New Chat
+    </button>
   </div>
 
-  <!-- BOTPRESS CHATBOT -->
+  <!-- BOTPRESS -->
   <script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
   <script src="https://files.bpcontent.cloud/2025/12/10/10/20251210104150-473UK9AA.js" defer></script>
 
 </body>
 </html>
+
 
