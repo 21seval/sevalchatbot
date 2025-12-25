@@ -1,63 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>SEVAL AI – Cafe Chatbot</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>SEVAL AI</title>
 
- 
-</head>
 <style>
-  /* Botpress chat boyutu */
-  .bpw-layout {
-    width: 420px !important;
-    height: 80vh !important;
-    max-height: 80vh !important;
-  }
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #050b1e, #020617);
+  font-family: Arial, sans-serif;
+}
 
-  /* Mobilde tam ekran */
-  @media (max-width: 768px) {
-    .bpw-layout {
-      width: 100% !important;
-      height: 100vh !important;
-      max-height: 100vh !important;
-      right: 0 !important;
-      bottom: 0 !important;
-      border-radius: 0 !important;
-    }
+/* Widget büyütme */
+#bp-web-widget-container {
+  width: 420px !important;
+  height: 80vh !important;
+}
+
+@media (max-width: 768px) {
+  #bp-web-widget-container {
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
   }
+}
 </style>
+</head>
 
 <body>
 
-<header>
-  <h1>SEVAL AI 🤖</h1>
-  <p>AI-powered chatbot for cafes & small businesses (US Market)</p>
-</header>
+<h1 style="color:white;text-align:center;margin-top:40px;">
+SEVAL AI 🤖
+</h1>
+<p style="color:#9aa4ff;text-align:center;">
+AI-powered chatbot for cafes & small businesses (US Market)
+</p>
 
-<!-- CHATBOT -->
-<div class="chat-container" id="chatBox">
-  <div class="chat-header">
-    <span>SEVAL AI – Live Chat</span>
-    <button onclick="resetChat()">Clear</button>
-  </div>
+<!-- CLEAR BUTTON -->
+<button id="clearChat"
+style="
+position: fixed;
+bottom: 100px;
+right: 20px;
+z-index: 9999;
+background:#ff4d4f;
+color:white;
+border:none;
+padding:10px 14px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+">
+Clear Chat
+</button>
 
-  <iframe
-    id="chatFrame"
-    src="https://cdn.botpress.cloud/webchat/v3.5/shareable.html?configUrl=https://files.bpcontent.cloud/2025/12/10/10/20251210104150-LYDGDTXZ.json "
-    allow="microphone"
-  ></iframe>
-</div>
+<!-- BOTPRESS -->
+<script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+<script>
+window.botpressWebChat.init({
+  botId: "BURAYA_BOT_ID",
+  hostUrl: "https://cdn.botpress.cloud/webchat/v1",
+  messagingUrl: "https://messaging.botpress.cloud",
+  clientId: "BURAYA_CLIENT_ID",
+  botName: "SEVAL AI",
+});
+</script>
 
 <script>
-  function resetChat() {
-    const frame = document.getElementById("chatFrame");
-    const src = frame.src;
-    frame.src = "";
-    setTimeout(() => {
-      frame.src = src;
-    }, 300);
+document.getElementById("clearChat").addEventListener("click", () => {
+  localStorage.clear();
+  sessionStorage.clear();
+  if (window.botpressWebChat) {
+    window.botpressWebChat.sendEvent({ type: "reset" });
   }
+  location.reload();
+});
 </script>
 
 </body>
