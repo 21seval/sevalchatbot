@@ -1,81 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SEVAL AI</title>
+  <meta charset="UTF-8" />
+  <title>Seval AI – Cafe Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-body {
-  margin: 0;
-  background: linear-gradient(135deg, #050b1e, #020617);
-  font-family: Arial, sans-serif;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      height: 100vh;
+    }
 
-/* Widget büyütme */
-#bp-web-widget-container {
-  width: 420px !important;
-  height: 80vh !important;
-}
+    /* LEFT SIDE (CAFE INFO) */
+    .left {
+      width: 40%;
+      background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") center/cover no-repeat;
+      padding: 40px;
+      box-sizing: border-box;
+    }
 
-@media (max-width: 768px) {
-  #bp-web-widget-container {
-    width: 100vw !important;
-    height: 100vh !important;
-    border-radius: 0 !important;
-  }
-}
-</style>
+    .left h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .left p {
+      font-size: 18px;
+      max-width: 400px;
+    }
+
+    /* RIGHT SIDE (CHATBOT) */
+    .right {
+      width: 60%;
+      position: relative;
+    }
+
+    /* CLEAR CHAT BUTTON */
+    .clear-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 9999;
+      background: #ef4444;
+      border: none;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
 
-<h1 style="color:white;text-align:center;margin-top:40px;">
-SEVAL AI 🤖
-</h1>
-<p style="color:#9aa4ff;text-align:center;">
-AI-powered chatbot for cafes & small businesses (US Market)
-</p>
+  <!-- LEFT -->
+  <div class="left">
+    <h1>Seval AI ☕</h1>
+    <p>
+      AI-powered cafe assistant.<br>
+      Answers menu questions, opening hours,<br>
+      and helps customers 24/7.
+    </p>
+  </div>
 
-<!-- CLEAR BUTTON -->
-<button id="clearChat"
-style="
-position: fixed;
-bottom: 100px;
-right: 20px;
-z-index: 9999;
-background:#ff4d4f;
-color:white;
-border:none;
-padding:10px 14px;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-">
-Clear Chat
-</button>
+  <!-- RIGHT -->
+  <div class="right">
+    <button class="clear-btn" onclick="location.reload()">Clear Chat</button>
+  </div>
 
-<!-- BOTPRESS -->
-<script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
-<script>
-window.botpressWebChat.init({
-  botId: "BURAYA_BOT_ID",
-  hostUrl: "https://cdn.botpress.cloud/webchat/v1",
-  messagingUrl: "https://messaging.botpress.cloud",
-  clientId: "BURAYA_CLIENT_ID",
-  botName: "SEVAL AI",
-});
-</script>
-
-<script>
-document.getElementById("clearChat").addEventListener("click", () => {
-  localStorage.clear();
-  sessionStorage.clear();
-  if (window.botpressWebChat) {
-    window.botpressWebChat.sendEvent({ type: "reset" });
-  }
-  location.reload();
-});
-</script>
+  <!-- BOTPRESS CHATBOT -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/12/10/10/20251210104150-473UK9AA.js" defer></script>
 
 </body>
 </html>
+
