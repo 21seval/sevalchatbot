@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Seval AI Café</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SEVAL AI – Café Assistant</title>
 
 <style>
 body {
@@ -13,185 +13,176 @@ body {
   color: #fff;
 }
 
-/* Layout */
-.container {
-  display: flex;
-  min-height: 100vh;
+header {
+  padding: 20px;
+  text-align: center;
+  background: #020617;
 }
 
-.left {
-  width: 35%;
-  background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") center/cover no-repeat;
+button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #6366f1;
+  color: #fff;
+  font-weight: bold;
 }
 
-.right {
-  width: 65%;
+section {
   padding: 20px;
 }
 
-/* Buttons */
-button {
-  background: #6366f1;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  margin: 5px;
-  border-radius: 6px;
-  cursor: pointer;
+.hidden {
+  display: none;
 }
-button:hover { opacity: 0.85; }
 
-.section { display: none; margin-top: 20px; }
+.menu-category button {
+  margin: 5px;
+  background: #1e293b;
+}
 
 .card {
   background: #1e293b;
   padding: 15px;
-  border-radius: 10px;
   margin: 10px 0;
+  border-radius: 10px;
 }
 
-/* Mobile */
-@media(max-width: 900px){
-  .container { flex-direction: column; }
-  .left { display:none; }
-  .right { width:100%; }
-}
-
-/* Chat */
-#chatbot {
-  display: none;
+#chat-toggle {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 9999;
+}
+
+#chat-container {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
   width: 380px;
   height: 520px;
+  background: #000;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  display: none;
   z-index: 9999;
+}
+
+@media (max-width: 600px) {
+  #chat-container {
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    right: 0;
+    border-radius: 0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>
+  <h1>SEVAL AI Café Assistant</h1>
+  <p>Designed for cafés in the United States</p>
+</header>
 
-  <div class="left"></div>
+<section>
+  <button onclick="showMenu()">Menu</button>
+  <button onclick="showReservation()">Reservation</button>
+</section>
 
-  <div class="right">
-    <h1>☕ Seval AI Café</h1>
-    <p>Welcome! How can we help you today?</p>
+<!-- MENU -->
+<section id="menu" class="hidden">
+  <h2>Menu</h2>
 
-    <button onclick="showSection('menu')">Menu</button>
-    <button onclick="showSection('reservation')">Reservation</button>
-    <button onclick="toggleChat()">Chat with Seval AI</button>
-
-    <!-- MENU -->
-    <div id="menu" class="section">
-      <h2>Menu</h2>
-      <button onclick="showCategory('hot')">Hot Drinks</button>
-      <button onclick="showCategory('cold')">Cold Drinks</button>
-      <button onclick="showCategory('dessert')">Desserts</button>
-      <button onclick="showCategory('sandwich')">Sandwiches</button>
-
-      <div id="menuItems"></div>
-    </div>
-
-    <!-- RESERVATION -->
-    <div id="reservation" class="section">
-      <h2>Reservation</h2>
-
-      <div class="card">
-        <label>Date:</label><br>
-        <input type="date" id="date"><br><br>
-
-        <label>Time:</label><br>
-        <input type="time" id="time"><br><br>
-
-        <label>Table:</label><br>
-        <select id="table">
-          <option>Table 1</option>
-          <option>Table 2</option>
-          <option>Table 3</option>
-        </select><br><br>
-
-        <label>Special Note:</label><br>
-        <textarea id="note" rows="3" style="width:100%"></textarea><br><br>
-
-        <button onclick="reserve()">Reserve</button>
-        <button onclick="clearReservation()">Cancel</button>
-
-        <p id="result"></p>
-      </div>
-    </div>
-
+  <div class="menu-category">
+    <button onclick="filterMenu('hot')">Hot Drinks</button>
+    <button onclick="filterMenu('cold')">Cold Drinks</button>
+    <button onclick="filterMenu('fresh')">Fresh</button>
+    <button onclick="filterMenu('dessert')">Desserts</button>
+    <button onclick="filterMenu('sandwich')">Sandwiches</button>
   </div>
-</div>
 
-<!-- CHATBOT -->
-<div id="chatbot">
-  <iframe
-    src="https://cdn.botpress.cloud/webchat/v3.5/shareable.html?config=PASTE_YOUR_CONFIG_HERE"
-    width="100%"
-    height="100%"
-    frameborder="0"
-    allow="microphone">
-  </iframe>
+  <div id="menu-items"></div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservation" class="hidden">
+  <h2>Reservation</h2>
+
+  <input type="date" id="date"><br><br>
+  <input type="time" id="time"><br><br>
+  <select id="table">
+    <option>Table for 2</option>
+    <option>Table for 4</option>
+    <option>Table for 6</option>
+  </select><br><br>
+
+  <textarea id="note" placeholder="Special note..." style="width:100%;height:80px;"></textarea><br><br>
+
+  <button onclick="reserve()">Reserve</button>
+  <button onclick="cancelReservation()" style="background:#ef4444;">Cancel</button>
+
+  <p id="reservation-msg"></p>
+</section>
+
+<!-- CHAT -->
+<button id="chat-toggle" onclick="toggleChat()">Chat</button>
+
+<div id="chat-container">
+  <!-- BOTPRESS -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/12/10/10/20251210104150-473UK9AA.js" defer></script>
 </div>
 
 <script>
-function showSection(id){
-  document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
-  document.getElementById(id).style.display = 'block';
+const menuData = [
+  {type:"hot", name:"Americano", price:"$4"},
+  {type:"hot", name:"Latte", price:"$5"},
+  {type:"cold", name:"Iced Coffee", price:"$5"},
+  {type:"fresh", name:"Orange Juice", price:"$6"},
+  {type:"dessert", name:"Cheesecake", price:"$7"},
+  {type:"sandwich", name:"Chicken Sandwich", price:"$9"}
+];
+
+function showMenu() {
+  document.getElementById("menu").classList.remove("hidden");
+  document.getElementById("reservation").classList.add("hidden");
 }
 
-const menus = {
-  hot: [
-    {name:"Espresso", price:"$4"},
-    {name:"Latte", price:"$5"},
-  ],
-  cold: [
-    {name:"Iced Coffee", price:"$5"},
-    {name:"Cold Brew", price:"$6"},
-  ],
-  dessert: [
-    {name:"Cheesecake", price:"$6"},
-    {name:"Brownie", price:"$5"},
-  ],
-  sandwich: [
-    {name:"Chicken Sandwich", price:"$8"},
-    {name:"Veggie Sandwich", price:"$7"},
-  ]
-};
+function showReservation() {
+  document.getElementById("reservation").classList.remove("hidden");
+  document.getElementById("menu").classList.add("hidden");
+}
 
-function showCategory(cat){
-  const div = document.getElementById("menuItems");
-  div.innerHTML = "";
-  menus[cat].forEach(i=>{
-    div.innerHTML += `
+function filterMenu(type) {
+  const container = document.getElementById("menu-items");
+  container.innerHTML = "";
+  menuData.filter(i => i.type === type).forEach(item => {
+    container.innerHTML += `
       <div class="card">
-        <strong>${i.name}</strong><br>
-        Price: ${i.price}
-      </div>`;
+        <strong>${item.name}</strong><br>
+        Price: ${item.price}
+      </div>
+    `;
   });
 }
 
-function reserve(){
-  document.getElementById("result").innerText =
-    "✅ Your reservation has been received!";
+function reserve() {
+  document.getElementById("reservation-msg").innerText =
+    "✅ Your reservation has been received.";
 }
 
-function clearReservation(){
-  document.getElementById("date").value="";
-  document.getElementById("time").value="";
-  document.getElementById("note").value="";
-  document.getElementById("result").innerText="Reservation cancelled.";
+function cancelReservation() {
+  document.getElementById("reservation-msg").innerText =
+    "❌ Reservation cancelled.";
 }
 
-function toggleChat(){
-  const c = document.getElementById("chatbot");
-  c.style.display = c.style.display === "none" ? "block" : "none";
+function toggleChat() {
+  const chat = document.getElementById("chat-container");
+  chat.style.display = chat.style.display === "none" ? "block" : "none";
 }
 </script>
 
