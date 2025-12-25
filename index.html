@@ -5,73 +5,28 @@
   <title>SEVAL AI – Cafe Chatbot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #fff;
-    }
-
-    header {
-      padding: 30px;
-      text-align: center;
-      background: #020617;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.2rem;
-    }
-
-    header p {
-      color: #cbd5f5;
-      margin-top: 10px;
-    }
-
-    .chat-container {
-      position: fixed;
-      bottom: 40px;
-      right: 40px;
-      width: 380px;
-      height: 1000px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      background: #000;
-      z-index: 9999;
-    }
-
-    .chat-header {
-      background: #1e293b;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-    }
-
-    .chat-header span {
-      font-size: 14px;
-    }
-
-    .chat-header button {
-      background: #ef4444;
-      border: none;
-      color: white;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    iframe {
-      width: 100%;
-      height: calc(200% - 60px);
-      border: none;
-    }
-  </style>
+ 
 </head>
+<style>
+  /* Botpress chat boyutu */
+  .bpw-layout {
+    width: 420px !important;
+    height: 80vh !important;
+    max-height: 80vh !important;
+  }
+
+  /* Mobilde tam ekran */
+  @media (max-width: 768px) {
+    .bpw-layout {
+      width: 100% !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      border-radius: 0 !important;
+    }
+  }
+</style>
 
 <body>
 
