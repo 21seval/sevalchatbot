@@ -2,62 +2,161 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Seval Café – AI Assistant</title>
+  <title>SEVAL AI – Café Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
       display: flex;
       height: 100vh;
-      background: #f8f8f8;
     }
 
+    /* LEFT PANEL */
     .left {
-      width: 45%;
-      background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      padding: 40px;
-      box-sizing: border-box;
+      width: 35%;
+      padding: 30px;
+      background: #020617;
+      overflow-y: auto;
     }
 
     .left h1 {
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      border-radius: 12px;
+      margin-bottom: 10px;
     }
 
+    .buttons button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 14px;
+      font-size: 16px;
+      background: #6366f1;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .content {
+      margin-top: 20px;
+    }
+
+    .item {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* RIGHT PANEL */
     .right {
-      width: 55%;
-      background: #0f172a;
-      padding: 20px;
-      box-sizing: border-box;
+      width: 65%;
+      position: relative;
+      background: #020617;
+    }
+
+    .clear-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 9999;
+      padding: 10px 16px;
+      background: #ef4444;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
     }
 
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-      border-radius: 12px;
-      background: white;
     }
   </style>
 </head>
+
 <body>
 
+  <!-- LEFT SIDE -->
   <div class="left">
-    <h1>☕ Welcome to Seval Café<br>How can we help you today?</h1>
+    <h1>SEVAL AI ☕</h1>
+    <p>Smart Café Assistant for the US</p>
+
+    <div class="buttons">
+      <button onclick="showMenu()">Menu</button>
+      <button onclick="showBest()">Best Sellers</button>
+      <button onclick="showReservation()">Reservation</button>
+    </div>
+
+    <div id="content" class="content">
+      <p>Please select an option 👆</p>
+    </div>
   </div>
 
+  <!-- RIGHT SIDE -->
   <div class="right">
+    <button class="clear-btn" onclick="clearChat()">Clear Chat</button>
+
+    <!-- BOTPRESS CHATBOT -->
     <iframe
-      src="SHARE_LINK_BURAYA"
-      allow="microphone"
-    ></iframe>
+      id="chatbot"
+      src="https://cdn.botpress.cloud/webchat/v3.5/shareable.html?config=BURAYA_KENDI_SHARE_LINKIN"
+      allow="microphone">
+    </iframe>
   </div>
+
+  <script>
+    function showMenu() {
+      document.getElementById("content").innerHTML = `
+        <div class="item">
+          <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93">
+          <strong>Latte</strong><br>$5.50
+        </div>
+        <div class="item">
+          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085">
+          <strong>Cappuccino</strong><br>$5.00
+        </div>
+      `;
+    }
+
+    function showBest() {
+      document.getElementById("content").innerHTML = `
+        <div class="item">
+          <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348">
+          <strong>Caramel Latte</strong><br>$6.00
+        </div>
+        <div class="item">
+          <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0">
+          <strong>Cheesecake</strong><br>$7.50
+        </div>
+      `;
+    }
+
+    function showReservation() {
+      document.getElementById("content").innerHTML = `
+        <div class="item">
+          <strong>Reservations</strong><br><br>
+          📞 Phone: (555) 123-4567<br>
+          📍 Downtown, NY<br>
+          🕘 8 AM – 10 PM
+        </div>
+      `;
+    }
+
+    function clearChat() {
+      document.getElementById("chatbot").src =
+        document.getElementById("chatbot").src;
+    }
+  </script>
 
 </body>
 </html>
-
