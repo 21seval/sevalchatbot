@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Seval AI Café Assistant</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     body {
@@ -19,71 +19,136 @@
       background: #020617;
     }
 
-    section {
-      padding: 30px 20px;
+    header h1 {
+      margin: 0;
     }
 
-    h2 {
-      margin-bottom: 15px;
+    header p {
+      color: #94a3b8;
+      font-size: 14px;
     }
 
-    .buttons {
+    .container {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .left {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .right {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .btn {
+      background: #6366f1;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      margin: 5px 0;
+    }
+
+    .btn.secondary {
+      background: #334155;
+    }
+
+    .section {
+      background: #020617;
+      padding: 16px;
+      border-radius: 12px;
       margin-bottom: 20px;
     }
 
-    button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #6366f1;
-      color: white;
-      font-weight: bold;
-    }
-
-    .grid {
+    .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
     }
 
-    .card {
-      background: #1e293b;
-      border-radius: 12px;
-      padding: 12px;
+    .menu-item {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 10px;
       text-align: center;
     }
 
-    .card img {
+    .menu-item img {
       width: 100%;
-      height: 130px;
+      height: 90px;
       object-fit: cover;
-      border-radius: 10px;
-    }
-
-    form {
-      max-width: 400px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    input, select, textarea {
-      padding: 10px;
       border-radius: 8px;
+    }
+
+    .menu-item h4 {
+      margin: 8px 0 4px;
+      font-size: 14px;
+    }
+
+    .menu-item span {
+      color: #a5b4fc;
+      font-size: 13px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 6px;
+      margin-bottom: 12px;
+      border-radius: 6px;
       border: none;
     }
 
-    .success {
-      margin-top: 10px;
+    #reservationMessage {
       color: #22c55e;
-      font-weight: bold;
-      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
       display: none;
+    }
+
+    /* CHAT */
+    #chat-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #6366f1;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      border: none;
+      font-size: 22px;
+      color: white;
+      cursor: pointer;
+      z-index: 9999;
+    }
+
+    #chat-box {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 360px;
+      height: 520px;
+      border-radius: 16px;
+      overflow: hidden;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 10px 40px rgba(0,0,0,.5);
+    }
+
+    @media(max-width:768px){
+      #chat-box {
+        width: 100%;
+        height: 100%;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
+      }
     }
   </style>
 </head>
@@ -91,86 +156,123 @@
 <body>
 
 <header>
-  <h1>Seval AI Café ☕</h1>
-  <p>Your friendly café assistant in the US</p>
+  <h1>Seval AI Café Assistant ☕</h1>
+  <p>Created by Seval AI • US Café Demo</p>
 </header>
 
-<!-- MENU -->
-<section>
-  <h2>Menu</h2>
+<div class="container">
 
-  <div class="buttons">
-    <button onclick="showMenu('hot')">Hot Drinks</button>
-    <button onclick="showMenu('cold')">Cold Drinks</button>
-    <button onclick="showMenu('dessert')">Desserts</button>
-    <button onclick="showMenu('sandwich')">Sandwiches</button>
+  <!-- LEFT -->
+  <div class="left">
+
+    <!-- MENU -->
+    <div class="section">
+      <h3>Menu</h3>
+
+      <button class="btn" onclick="showMenu('hot')">Hot Drinks</button>
+      <button class="btn" onclick="showMenu('cold')">Cold Drinks</button>
+      <button class="btn" onclick="showMenu('fresh')">Fresh Drinks</button>
+      <button class="btn" onclick="showMenu('dessert')">Desserts</button>
+      <button class="btn" onclick="showMenu('sandwich')">Sandwiches</button>
+
+      <div id="menuContent" class="menu-grid" style="margin-top:12px;"></div>
+    </div>
+
+    <!-- RESERVATION -->
+    <div class="section">
+      <h3>Reservation</h3>
+
+      <label>Date</label>
+      <input type="date">
+
+      <label>Time</label>
+      <input type="time">
+
+      <label>Table for</label>
+      <select>
+        <option>2 people</option>
+        <option>4 people</option>
+        <option>6 people</option>
+      </select>
+
+      <label>Special Note</label>
+      <textarea placeholder="Birthday, window seat, etc."></textarea>
+
+      <button class="btn" onclick="reserve()">Reserve</button>
+      <button class="btn secondary" onclick="cancel()">Cancel</button>
+
+      <div id="reservationMessage">Your reservation has been received ✅</div>
+    </div>
+
   </div>
 
-  <div id="menu" class="grid"></div>
-</section>
-
-<!-- RESERVATION -->
-<section>
-  <h2>Reservation</h2>
-
-  <form onsubmit="reserve(event)">
-    <input type="date" required />
-    <input type="time" required />
-    <select required>
-      <option value="">Select table</option>
-      <option>Table for 2</option>
-      <option>Table for 4</option>
-      <option>Table for 6</option>
-    </select>
-    <textarea placeholder="Special note (optional)"></textarea>
-    <button type="submit">Reserve</button>
-  </form>
-
-  <div class="success" id="successMsg">
-    ✅ Your reservation has been received!
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="section">
+      <h3>Welcome 👋</h3>
+      <p>Use the menu buttons or chat with us for recommendations.</p>
+    </div>
   </div>
-</section>
 
-<!-- BOTPRESS CHAT (TEK CHAT) -->
-<script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2025/12/10/10/20251210104150-473UK9AA.js" defer></script>
+</div>
+
+<!-- CHAT -->
+<button id="chat-toggle" onclick="toggleChat()">💬</button>
+
+<div id="chat-box">
+  <iframe
+    src="https://cdn.botpress.cloud/webchat/v3.5/shareable.html?configUrl=https://files.bpcontent.cloud/2025/12/10/10/20251210104150-LYDGDTXZ.json"
+    style="width:100%; height:100%; border:none;"
+    allow="microphone"
+  ></iframe>
+</div>
 
 <script>
-  const data = {
+  function toggleChat(){
+    const box = document.getElementById('chat-box');
+    box.style.display = box.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function reserve(){
+    document.getElementById('reservationMessage').style.display = 'block';
+  }
+
+  function cancel(){
+    document.getElementById('reservationMessage').style.display = 'none';
+    alert('Reservation cancelled');
+  }
+
+  const menus = {
     hot: [
-      {name:"Latte", price:"$4.50", img:"https://images.unsplash.com/photo-1511920170033-f8396924c348"},
-      {name:"Americano", price:"$3.50", img:"https://images.unsplash.com/photo-1509042239860-f550ce710b93"}
+      {name:'Latte', price:'$4.50', img:'https://images.unsplash.com/photo-1511920170033-f8396924c348'},
+      {name:'Cappuccino', price:'$4.00', img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93'}
     ],
     cold: [
-      {name:"Iced Coffee", price:"$4.00", img:"https://images.unsplash.com/photo-1525382455947-f319bc05fb2a"},
-      {name:"Cold Brew", price:"$4.80", img:"https://images.unsplash.com/photo-1558640479-823cc5a6d42a"}
+      {name:'Iced Coffee', price:'$4.00', img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085'}
+    ],
+    fresh: [
+      {name:'Orange Juice', price:'$5.00', img:'https://images.unsplash.com/photo-1577801599718-f4e3ad3fc794'}
     ],
     dessert: [
-      {name:"Cheesecake", price:"$5.50", img:"https://images.unsplash.com/photo-1505253716362-afaea1d3d1af"},
-      {name:"Brownie", price:"$4.00", img:"https://images.unsplash.com/photo-1606312619344-49d35c5b1d9f"}
+      {name:'Cheesecake', price:'$6.00', img:'https://images.unsplash.com/photo-1542826438-bd32f43d626f'}
     ],
     sandwich: [
-      {name:"Chicken Sandwich", price:"$6.50", img:"https://images.unsplash.com/photo-1606756790138-261d2b21cd75"},
-      {name:"Veggie Sandwich", price:"$6.00", img:"https://images.unsplash.com/photo-1544025162-d76694265947"}
+      {name:'Chicken Sandwich', price:'$8.50', img:'https://images.unsplash.com/photo-1550547660-d9450f859349'}
     ]
   };
 
-  function showMenu(type) {
-    const menu = document.getElementById("menu");
-    menu.innerHTML = "";
-    data[type].forEach(item => {
-      menu.innerHTML += `
-        <div class="card">
+  function showMenu(type){
+    const container = document.getElementById('menuContent');
+    container.innerHTML = '';
+    menus[type].forEach(item=>{
+      container.innerHTML += `
+        <div class="menu-item">
           <img src="${item.img}">
           <h4>${item.name}</h4>
-          <p>${item.price}</p>
-        </div>`;
+          <span>${item.price}</span>
+        </div>
+      `;
     });
-  }
-
-  function reserve(e) {
-    e.preventDefault();
-    document.getElementById("successMsg").style.display = "block";
   }
 </script>
 
