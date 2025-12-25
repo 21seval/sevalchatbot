@@ -2,104 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Seval AI – Cafe Assistant</title>
+  <title>Seval AI – Cafe Chatbot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
     body {
       margin: 0;
+      font-family: Arial, sans-serif;
       background: #0f172a;
       color: white;
-      height: 100vh;
       display: flex;
+      height: 100vh;
     }
 
-    /* LEFT SIDE – CAFE INFO */
+    /* SOL TARAF (Cafe görsel alanı) */
     .left {
       width: 40%;
-      padding: 40px;
-      background: linear-gradient(160deg, #020617, #0f172a);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 20px;
+      background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") center/cover no-repeat;
     }
 
-    .left h1 {
-      font-size: 42px;
-      margin: 0;
-    }
-
-    .left p {
-      font-size: 18px;
-      color: #cbd5f5;
-    }
-
-    .left img {
-      width: 100%;
-      border-radius: 14px;
-      margin-top: 20px;
-      object-fit: cover;
-    }
-
-    /* RIGHT SIDE – CHAT */
+    /* SAĞ TARAF (Chatbot) */
     .right {
       width: 60%;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 16px;
       background: #020617;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #chat-container {
+      flex: 1;
+      position: relative;
     }
 
     /* CLEAR BUTTON */
-    .clear-btn {
+    #clearChat {
       position: absolute;
-      top: 15px;
-      right: 15px;
+      top: 10px;
+      right: 10px;
       z-index: 9999;
+      padding: 8px 12px;
       background: #ef4444;
-      border: none;
       color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: bold;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
-    }
-
-    .clear-btn:hover {
-      background: #dc2626;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- LEFT -->
-  <div class="left">
-    <h1>Seval AI ☕</h1>
-    <p>
-      Smart AI assistant for cafes.<br>
-      Answers questions, shows menu, working hours and boosts sales.
-    </p>
+  <div class="left"></div>
 
-    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" alt="Cafe">
-  </div>
-
-  <!-- RIGHT -->
   <div class="right">
-    <button class="clear-btn" onclick="location.reload()">
-      New Chat
-    </button>
+    <header>Seval AI – Cafe Assistant ☕</header>
+
+    <div id="chat-container">
+      <button id="clearChat">Clear Chat</button>
+    </div>
   </div>
 
   <!-- BOTPRESS -->
   <script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
   <script src="https://files.bpcontent.cloud/2025/12/10/10/20251210104150-473UK9AA.js" defer></script>
 
+  <script>
+    document.getElementById("clearChat").onclick = function () {
+      if (window.botpressWebChat) {
+        window.botpressWebChat.sendEvent({ type: "reset" });
+      }
+    };
+  </script>
+
 </body>
 </html>
-
-
