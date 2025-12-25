@@ -1,192 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SEVAL AI – Café Assistant</title>
+  <meta charset="UTF-8" />
+  <title>Seval AI Café</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #fff;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+    }
 
-header {
-  padding: 20px;
-  text-align: center;
-  background: #020617;
-}
+    header {
+      padding: 20px;
+      text-align: center;
+      background: #020617;
+    }
 
-button {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background: #6366f1;
-  color: #fff;
-  font-weight: bold;
-}
+    header h1 {
+      margin: 0;
+    }
 
-section {
-  padding: 20px;
-}
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      gap: 20px;
+    }
 
-.hidden {
-  display: none;
-}
+    .left, .right {
+      flex: 1;
+      min-width: 300px;
+    }
 
-.menu-category button {
-  margin: 5px;
-  background: #1e293b;
-}
+    .section {
+      background: #020617;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
 
-.card {
-  background: #1e293b;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 10px;
-}
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #6366f1;
+      color: white;
+      margin: 5px 0;
+    }
 
-#chat-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-}
+    button.secondary {
+      background: #334155;
+    }
 
-#chat-container {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 380px;
-  height: 520px;
-  background: #000;
-  border-radius: 16px;
-  overflow: hidden;
-  display: none;
-  z-index: 9999;
-}
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
 
-@media (max-width: 600px) {
-  #chat-container {
-    width: 100%;
-    height: 100%;
-    bottom: 0;
-    right: 0;
-    border-radius: 0;
-  }
-}
-</style>
+    .item {
+      background: #1e293b;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .item img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .success {
+      color: #22c55e;
+      margin-top: 10px;
+    }
+
+    /* Chat buttons */
+    .chat-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-  <h1>SEVAL AI Café Assistant</h1>
-  <p>Designed for cafés in the United States</p>
+  <h1>Seval AI Café ☕</h1>
+  <p>Welcome! How can we help you today?</p>
 </header>
 
-<section>
-  <button onclick="showMenu()">Menu</button>
-  <button onclick="showReservation()">Reservation</button>
-</section>
+<div class="container">
 
-<!-- MENU -->
-<section id="menu" class="hidden">
-  <h2>Menu</h2>
+  <!-- LEFT -->
+  <div class="left">
 
-  <div class="menu-category">
-    <button onclick="filterMenu('hot')">Hot Drinks</button>
-    <button onclick="filterMenu('cold')">Cold Drinks</button>
-    <button onclick="filterMenu('fresh')">Fresh</button>
-    <button onclick="filterMenu('dessert')">Desserts</button>
-    <button onclick="filterMenu('sandwich')">Sandwiches</button>
+    <!-- MENU -->
+    <div class="section">
+      <h2>Menu</h2>
+
+      <button onclick="showMenu('hot')">Hot Drinks</button>
+      <button onclick="showMenu('cold')">Cold Drinks</button>
+      <button onclick="showMenu('fresh')">Fresh</button>
+      <button onclick="showMenu('dessert')">Desserts</button>
+      <button onclick="showMenu('sandwich')">Sandwiches</button>
+
+      <div id="menu" class="menu-grid"></div>
+    </div>
+
+    <!-- RECOMMENDED -->
+    <div class="section">
+      <h2>Recommended ⭐</h2>
+      <p>• Caramel Latte – $5.90</p>
+      <p>• Turkey Sandwich – $8.50</p>
+      <p>• Cheesecake – $6.20</p>
+    </div>
+
   </div>
 
-  <div id="menu-items"></div>
-</section>
+  <!-- RIGHT -->
+  <div class="right">
 
-<!-- RESERVATION -->
-<section id="reservation" class="hidden">
-  <h2>Reservation</h2>
+    <!-- RESERVATION -->
+    <div class="section">
+      <h2>Reservation</h2>
 
-  <input type="date" id="date"><br><br>
-  <input type="time" id="time"><br><br>
-  <select id="table">
-    <option>Table for 2</option>
-    <option>Table for 4</option>
-    <option>Table for 6</option>
-  </select><br><br>
+      <label>Date</label>
+      <input type="date" id="date">
 
-  <textarea id="note" placeholder="Special note..." style="width:100%;height:80px;"></textarea><br><br>
+      <label>Time</label>
+      <input type="time" id="time">
 
-  <button onclick="reserve()">Reserve</button>
-  <button onclick="cancelReservation()" style="background:#ef4444;">Cancel</button>
+      <label>Table</label>
+      <select id="table">
+        <option>Table for 2</option>
+        <option>Table for 4</option>
+        <option>Table for 6</option>
+      </select>
 
-  <p id="reservation-msg"></p>
-</section>
+      <label>Special Note</label>
+      <textarea id="note" placeholder="Any special request?"></textarea>
 
-<!-- CHAT -->
-<button id="chat-toggle" onclick="toggleChat()">Chat</button>
+      <button onclick="reserve()">Reserve</button>
+      <button class="secondary" onclick="cancel()">Cancel</button>
 
-<div id="chat-container">
-  <!-- BOTPRESS -->
-  <script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
-  <script src="https://files.bpcontent.cloud/2025/12/10/10/20251210104150-473UK9AA.js" defer></script>
+      <div id="msg" class="success"></div>
+    </div>
+
+  </div>
+
 </div>
 
+<!-- CHAT CONTROLS -->
+<div class="chat-controls">
+  <button onclick="openChat()">Chat</button>
+  <button class="secondary" onclick="clearChat()">Clear</button>
+</div>
+
+<!-- BOTPRESS (TEK CHAT – DOĞRU) -->
+<script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2025/12/10/10/20251210104150-473UK9AA.js" defer></script>
+
 <script>
-const menuData = [
-  {type:"hot", name:"Americano", price:"$4"},
-  {type:"hot", name:"Latte", price:"$5"},
-  {type:"cold", name:"Iced Coffee", price:"$5"},
-  {type:"fresh", name:"Orange Juice", price:"$6"},
-  {type:"dessert", name:"Cheesecake", price:"$7"},
-  {type:"sandwich", name:"Chicken Sandwich", price:"$9"}
-];
+  const menus = {
+    hot: [
+      {name:"Latte", price:"$5.50", img:"https://images.unsplash.com/photo-1511920170033-f8396924c348"},
+      {name:"Americano", price:"$4.20", img:"https://images.unsplash.com/photo-1509042239860-f550ce710b93"}
+    ],
+    cold: [
+      {name:"Iced Coffee", price:"$4.80", img:"https://images.unsplash.com/photo-1498804103079-a6351b050096"}
+    ],
+    fresh: [
+      {name:"Orange Juice", price:"$5.00", img:"https://images.unsplash.com/photo-1571687949921-1306bfb24b72"}
+    ],
+    dessert: [
+      {name:"Cheesecake", price:"$6.20", img:"https://images.unsplash.com/photo-1542826438-bd32f43c2bdb"}
+    ],
+    sandwich: [
+      {name:"Turkey Sandwich", price:"$8.50", img:"https://images.unsplash.com/photo-1604908177225-6c1c1c1c1c1c"}
+    ]
+  };
 
-function showMenu() {
-  document.getElementById("menu").classList.remove("hidden");
-  document.getElementById("reservation").classList.add("hidden");
-}
+  function showMenu(type){
+    const menu = document.getElementById("menu");
+    menu.innerHTML = "";
+    menus[type].forEach(i=>{
+      menu.innerHTML += `
+        <div class="item">
+          <img src="${i.img}">
+          <h4>${i.name}</h4>
+          <p>${i.price}</p>
+        </div>
+      `;
+    });
+  }
 
-function showReservation() {
-  document.getElementById("reservation").classList.remove("hidden");
-  document.getElementById("menu").classList.add("hidden");
-}
+  function reserve(){
+    document.getElementById("msg").innerText = "Your reservation has been received ✅";
+  }
 
-function filterMenu(type) {
-  const container = document.getElementById("menu-items");
-  container.innerHTML = "";
-  menuData.filter(i => i.type === type).forEach(item => {
-    container.innerHTML += `
-      <div class="card">
-        <strong>${item.name}</strong><br>
-        Price: ${item.price}
-      </div>
-    `;
-  });
-}
+  function cancel(){
+    document.getElementById("msg").innerText = "Reservation cancelled.";
+  }
 
-function reserve() {
-  document.getElementById("reservation-msg").innerText =
-    "✅ Your reservation has been received.";
-}
+  function openChat(){
+    window.botpressWebChat?.sendEvent({ type: "show" });
+  }
 
-function cancelReservation() {
-  document.getElementById("reservation-msg").innerText =
-    "❌ Reservation cancelled.";
-}
-
-function toggleChat() {
-  const chat = document.getElementById("chat-container");
-  chat.style.display = chat.style.display === "none" ? "block" : "none";
-}
+  function clearChat(){
+    window.botpressWebChat?.sendEvent({ type: "reset" });
+  }
 </script>
 
 </body>
 </html>
-
-
