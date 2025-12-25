@@ -3,266 +3,218 @@
 <head>
   <meta charset="UTF-8" />
   <title>Seval AI Café</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { margin: 0; background:#0f172a; color:#fff; }
-
-    header {
-      padding: 20px;
-      text-align: center;
-      background:#020617;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") center/cover no-repeat;
+      min-height: 100vh;
+      color: white;
     }
 
-    h1 { margin: 0; }
-    .subtitle { color:#c7d2fe; margin-top:8px; }
+    .overlay {
+      background: rgba(0,0,0,0.6);
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-    .actions {
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      margin:20px;
-      flex-wrap:wrap;
+    h1 {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
     }
 
     button {
-      padding:12px 20px;
-      border:none;
-      border-radius:8px;
-      background:#6366f1;
-      color:#fff;
-      font-size:16px;
-      cursor:pointer;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #c89b3c;
+      color: black;
+      font-weight: bold;
     }
 
-    button.secondary {
-      background:#334155;
+    .section {
+      display: none;
+      background: white;
+      color: black;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 12px;
     }
 
-    section {
-      padding:20px;
-      max-width:1100px;
-      margin:auto;
+    .menu-category {
+      margin-top: 20px;
     }
 
-    .hidden { display:none; }
-
-    /* MENU */
-    .category-buttons {
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:20px;
+    .menu-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      align-items: center;
     }
 
-    .menu-grid {
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap:16px;
+    .menu-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
     }
 
-    .card {
-      background:#1e293b;
-      border-radius:12px;
-      overflow:hidden;
-    }
-
-    .card img {
-      width:100%;
-      height:150px;
-      object-fit:cover;
-    }
-
-    .card-body {
-      padding:12px;
-    }
-
-    .price {
-      color:#a5b4fc;
-      margin-top:6px;
-    }
-
-    /* MODAL */
-    .modal {
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.6);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-    }
-
-    .modal-content {
-      background:#020617;
-      padding:20px;
-      border-radius:12px;
-      width:100%;
-      max-width:400px;
-    }
-
-    .modal-content input,
-    .modal-content textarea,
-    .modal-content select {
-      width:100%;
-      padding:10px;
-      margin-bottom:10px;
-      border-radius:6px;
-      border:none;
+    .reservation input, .reservation select, .reservation textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
     }
 
     .success {
-      background:#16a34a;
-      padding:12px;
-      border-radius:8px;
-      margin-top:10px;
-      text-align:center;
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
     }
 
-    /* CHAT */
-    @media (max-width: 768px) {
-      .bp-widget-web {
-        transform: scale(0.9);
+    /* CHAT BUTTON */
+    #chatButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4f46e5;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 14px;
+      z-index: 9999;
+    }
+
+    #chatContainer {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    @media (max-width: 600px) {
+      #chatContainer {
+        width: 95%;
+        height: 80%;
+        right: 2.5%;
       }
     }
   </style>
 </head>
 
 <body>
+<div class="overlay">
 
-<header>
-  <h1>Seval AI Café</h1>
-  <div class="subtitle">Friendly café assistant for US customers</div>
-</header>
+  <h1>Welcome to Seval Café ☕</h1>
+  <p style="text-align:center;">Powered by Seval AI</p>
 
-<div class="actions">
-  <button onclick="openMenu()">Menu</button>
-  <button onclick="openReservation()">Reservation</button>
-  <button class="secondary" onclick="openRecommended()">Recommended</button>
-</div>
-
-<!-- MENU -->
-<section id="menuSection" class="hidden">
-  <h2>Menu</h2>
-
-  <div class="category-buttons">
-    <button onclick="showCategory('hot')">Hot Drinks</button>
-    <button onclick="showCategory('cold')">Cold Drinks</button>
-    <button onclick="showCategory('dessert')">Desserts</button>
-    <button onclick="showCategory('sandwich')">Sandwiches</button>
+  <div class="buttons">
+    <button onclick="showSection('menu')">Menu</button>
+    <button onclick="showSection('reservation')">Reservation</button>
   </div>
 
-  <div class="menu-grid" id="menuGrid"></div>
-</section>
+  <!-- MENU -->
+  <div id="menu" class="section">
+    <h2>Menu</h2>
 
-<!-- RECOMMENDED -->
-<section id="recommendedSection" class="hidden">
-  <h2>Recommended Items</h2>
-  <div class="menu-grid">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348" />
-      <div class="card-body">
-        <strong>Caramel Latte</strong>
-        <div class="price">$5.50</div>
+    <div class="menu-category">
+      <h3>☕ Hot Drinks</h3>
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348">
+        <div>Latte – $5.50</div>
+      </div>
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93">
+        <div>Espresso – $4.00</div>
       </div>
     </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1505253216365-34c8e0b3f2c4" />
-      <div class="card-body">
-        <strong>Avocado Sandwich</strong>
-        <div class="price">$8.90</div>
+
+    <div class="menu-category">
+      <h3>🧊 Cold Drinks</h3>
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1525385133512-2f3bdd039054">
+        <div>Iced Coffee – $5.00</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>🍰 Desserts</h3>
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1541783245831-57d6fb0926d3">
+        <div>Cheesecake – $6.50</div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- RESERVATION MODAL -->
-<div id="reservationModal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Table Reservation</h3>
-    <input type="date" />
-    <input type="time" />
+  <!-- RESERVATION -->
+  <div id="reservation" class="section reservation">
+    <h2>Reservation</h2>
+
+    <input type="date">
+    <input type="time">
+
     <select>
-      <option>Table for 1</option>
       <option>Table for 2</option>
       <option>Table for 4</option>
+      <option>Table for 6</option>
     </select>
-    <textarea placeholder="Special notes (optional)"></textarea>
+
+    <textarea placeholder="Special note (optional)"></textarea>
+
     <button onclick="confirmReservation()">Reserve</button>
-    <button class="secondary" onclick="closeReservation()">Cancel</button>
-    <div id="reservationSuccess" class="success hidden">
-      Reservation received ✔
+
+    <div id="reservationSuccess" class="success" style="display:none;">
+      ✅ Your reservation has been received.
     </div>
   </div>
+
 </div>
 
-<!-- BOTPRESS CHAT – TEK VE DOĞRU -->
-<script src="https://cdn.botpress.cloud/webchat/v3.5/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2025/12/10/10/20251210104150-473UK9AA.js" defer></script>
+<!-- CHAT -->
+<button id="chatButton" onclick="toggleChat()">Chat</button>
+
+<div id="chatContainer">
+  <iframe
+    src="https://cdn.botpress.cloud/webchat/v3.5/shareable.html?config=BURAYA_KENDI_SHARE_LINKIN"
+    style="width:100%; height:100%; border:none;"
+    allow="microphone"
+  ></iframe>
+</div>
 
 <script>
-  const menuItems = {
-    hot: [
-      { name:"Espresso", price:"$3.00", img:"https://images.unsplash.com/photo-1511920170033-f8396924c348" },
-      { name:"Latte", price:"$4.50", img:"https://images.unsplash.com/photo-1523942839745-7848d40d42f5" }
-    ],
-    cold: [
-      { name:"Iced Coffee", price:"$4.00", img:"https://images.unsplash.com/photo-1521305916504-4a1121188589" }
-    ],
-    dessert: [
-      { name:"Cheesecake", price:"$6.50", img:"https://images.unsplash.com/photo-1541781408260-3c9c8d0c7f2f" }
-    ],
-    sandwich: [
-      { name:"Chicken Sandwich", price:"$8.50", img:"https://images.unsplash.com/photo-1604908554027-95f1f7b0f7a4" }
-    ]
-  };
-
-  function openMenu() {
-    hideAll();
-    document.getElementById("menuSection").classList.remove("hidden");
-  }
-
-  function openRecommended() {
-    hideAll();
-    document.getElementById("recommendedSection").classList.remove("hidden");
-  }
-
-  function showCategory(cat) {
-    const grid = document.getElementById("menuGrid");
-    grid.innerHTML = "";
-    menuItems[cat].forEach(i => {
-      grid.innerHTML += `
-        <div class="card">
-          <img src="${i.img}">
-          <div class="card-body">
-            <strong>${i.name}</strong>
-            <div class="price">${i.price}</div>
-          </div>
-        </div>`;
-    });
-  }
-
-  function openReservation() {
-    document.getElementById("reservationModal").classList.remove("hidden");
-  }
-
-  function closeReservation() {
-    document.getElementById("reservationModal").classList.add("hidden");
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
   }
 
   function confirmReservation() {
-    document.getElementById("reservationSuccess").classList.remove("hidden");
+    document.getElementById("reservationSuccess").style.display = "block";
   }
 
-  function hideAll() {
-    document.getElementById("menuSection").classList.add("hidden");
-    document.getElementById("recommendedSection").classList.add("hidden");
+  function toggleChat() {
+    const chat = document.getElementById("chatContainer");
+    chat.style.display = chat.style.display === "none" ? "block" : "none";
   }
 </script>
 
 </body>
 </html>
- 
-
-    
