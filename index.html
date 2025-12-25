@@ -1,25 +1,109 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Seval AI Chatbot</title>
-</head>
-<body style="margin:0; padding:0; background:#0f172a; color:white;">
+  <title>SEVAL AI – Cafe Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <h1 style="text-align:center; padding:20px;">
-    İBRAHİM Aİ
-  </h1>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+    }
+
+    header {
+      padding: 30px;
+      text-align: center;
+      background: #020617;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    header p {
+      color: #cbd5f5;
+      margin-top: 10px;
+    }
+
+    .chat-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 380px;
+      height: 520px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      background: #000;
+      z-index: 9999;
+    }
+
+    .chat-header {
+      background: #1e293b;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .chat-header span {
+      font-size: 14px;
+    }
+
+    .chat-header button {
+      background: #ef4444;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100% - 40px);
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>SEVAL AI 🤖</h1>
+  <p>AI-powered chatbot for cafes & small businesses (US Market)</p>
+</header>
+
+<!-- CHATBOT -->
+<div class="chat-container" id="chatBox">
+  <div class="chat-header">
+    <span>SEVAL AI – Live Chat</span>
+    <button onclick="resetChat()">Clear</button>
+  </div>
 
   <iframe
-    src="https://cdn.botpress.cloud/webchat/v3.5/shareable.html?configUrl=https://files.bpcontent.cloud/2025/12/10/10/20251210104150-LYDGDTXZ.json"
-    style="
-      display:block;
-      width:100%;
-      height:80vh;
-      border:none;
-    "
+    id="chatFrame"
+    src="BURAYA_KENDI_BOTPRESS_SHARE_LINKINI_YAPISTIR"
     allow="microphone"
   ></iframe>
+</div>
+
+<script>
+  function resetChat() {
+    const frame = document.getElementById("chatFrame");
+    const src = frame.src;
+    frame.src = "";
+    setTimeout(() => {
+      frame.src = src;
+    }, 300);
+  }
+</script>
 
 </body>
 </html>
