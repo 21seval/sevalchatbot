@@ -1,280 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Seval AI Café Assistant</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seval AI Café</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #fff;
-    }
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f172a;
+    color: #fff;
+  }
 
-    header {
-      padding: 20px;
-      text-align: center;
-      background: #020617;
-    }
+  header {
+    padding: 20px;
+    text-align: center;
+    background: #020617;
+  }
 
-    header h1 {
-      margin: 0;
-    }
+  header h1 {
+    margin: 0;
+  }
 
-    header p {
-      color: #94a3b8;
-      font-size: 14px;
-    }
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
 
+  @media (max-width: 900px) {
     .container {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
-      gap: 20px;
+      grid-template-columns: 1fr;
     }
+  }
 
-    .left {
-      flex: 1;
-      min-width: 300px;
-    }
+  .card {
+    background: #020617;
+    border-radius: 12px;
+    padding: 20px;
+  }
 
-    .right {
-      flex: 1;
-      min-width: 300px;
-    }
+  button {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 5px 0;
+    width: 100%;
+    font-size: 16px;
+  }
 
-    .btn {
-      background: #6366f1;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      margin: 5px 0;
-    }
+  button.secondary {
+    background: #334155;
+  }
 
-    .btn.secondary {
-      background: #334155;
-    }
+  .hidden {
+    display: none;
+  }
 
-    .section {
-      background: #020617;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
 
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
-    }
+  .menu-item {
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+  }
 
-    .menu-item {
-      background: #0f172a;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-    }
+  .menu-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
 
-    .menu-item img {
+  .menu-item p {
+    margin: 6px 0;
+  }
+
+  /* CHAT */
+  #chat-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 380px;
+    height: 520px;
+    display: none;
+    z-index: 9999;
+  }
+
+  @media (max-width: 600px) {
+    #chat-wrapper {
       width: 100%;
-      height: 90px;
-      object-fit: cover;
-      border-radius: 8px;
+      height: 100%;
+      bottom: 0;
+      right: 0;
+      border-radius: 0;
     }
+  }
 
-    .menu-item h4 {
-      margin: 8px 0 4px;
-      font-size: 14px;
-    }
+  #chat-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 16px;
+  }
 
-    .menu-item span {
-      color: #a5b4fc;
-      font-size: 13px;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 6px;
-      margin-bottom: 12px;
-      border-radius: 6px;
-      border: none;
-    }
-
-    #reservationMessage {
-      color: #22c55e;
-      font-size: 14px;
-      margin-top: 10px;
-      display: none;
-    }
-
-    /* CHAT */
-    #chat-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #6366f1;
-      border-radius: 50%;
-      width: 56px;
-      height: 56px;
-      border: none;
-      font-size: 22px;
-      color: white;
-      cursor: pointer;
-      z-index: 9999;
-    }
-
-    #chat-box {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 360px;
-      height: 520px;
-      border-radius: 16px;
-      overflow: hidden;
-      display: none;
-      z-index: 9999;
-      box-shadow: 0 10px 40px rgba(0,0,0,.5);
-    }
-
-    @media(max-width:768px){
-      #chat-box {
-        width: 100%;
-        height: 100%;
-        bottom: 0;
-        right: 0;
-        border-radius: 0;
-      }
-    }
-  </style>
+  #chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9998;
+  }
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>Seval AI Café Assistant ☕</h1>
-  <p>Created by Seval AI • US Café Demo</p>
+  <h1>Seval AI Café ☕</h1>
+  <p>Welcome – Menu, Reservations & Live Chat</p>
 </header>
 
 <div class="container">
 
-  <!-- LEFT -->
-  <div class="left">
+  <!-- MENU -->
+  <div class="card">
+    <h2>Menu</h2>
+    <button onclick="showMenu('drinks')">Hot & Cold Drinks</button>
+    <button onclick="showMenu('food')">Sandwiches & Desserts</button>
 
-    <!-- MENU -->
-    <div class="section">
-      <h3>Menu</h3>
-
-      <button class="btn" onclick="showMenu('hot')">Hot Drinks</button>
-      <button class="btn" onclick="showMenu('cold')">Cold Drinks</button>
-      <button class="btn" onclick="showMenu('fresh')">Fresh Drinks</button>
-      <button class="btn" onclick="showMenu('dessert')">Desserts</button>
-      <button class="btn" onclick="showMenu('sandwich')">Sandwiches</button>
-
-      <div id="menuContent" class="menu-grid" style="margin-top:12px;"></div>
+    <div id="drinks" class="menu-grid hidden">
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93">
+        <p>Latte</p>
+        <p>$5</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348">
+        <p>Iced Coffee</p>
+        <p>$6</p>
+      </div>
     </div>
 
-    <!-- RESERVATION -->
-    <div class="section">
-      <h3>Reservation</h3>
-
-      <label>Date</label>
-      <input type="date">
-
-      <label>Time</label>
-      <input type="time">
-
-      <label>Table for</label>
-      <select>
-        <option>2 people</option>
-        <option>4 people</option>
-        <option>6 people</option>
-      </select>
-
-      <label>Special Note</label>
-      <textarea placeholder="Birthday, window seat, etc."></textarea>
-
-      <button class="btn" onclick="reserve()">Reserve</button>
-      <button class="btn secondary" onclick="cancel()">Cancel</button>
-
-      <div id="reservationMessage">Your reservation has been received ✅</div>
+    <div id="food" class="menu-grid hidden">
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
+        <p>Sandwich</p>
+        <p>$9</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1548943487-a2e4e43b4853">
+        <p>Cheesecake</p>
+        <p>$7</p>
+      </div>
     </div>
-
   </div>
 
-  <!-- RIGHT -->
-  <div class="right">
-    <div class="section">
-      <h3>Welcome 👋</h3>
-      <p>Use the menu buttons or chat with us for recommendations.</p>
-    </div>
+  <!-- RESERVATION -->
+  <div class="card">
+    <h2>Reservation</h2>
+    <input type="date" id="date" style="width:100%;padding:10px;margin-bottom:10px;">
+    <input type="time" id="time" style="width:100%;padding:10px;margin-bottom:10px;">
+    <input type="number" placeholder="Table for how many?" id="table" style="width:100%;padding:10px;margin-bottom:10px;">
+    <textarea placeholder="Special note" id="note" style="width:100%;padding:10px;margin-bottom:10px;"></textarea>
+    <button onclick="reserve()">Reserve</button>
+    <p id="reserve-msg"></p>
   </div>
 
 </div>
 
-<!-- CHAT -->
-<button id="chat-toggle" onclick="toggleChat()">💬</button>
+<!-- CHAT BUTTON -->
+<button id="chat-toggle" onclick="toggleChat()">Chat with us 💬</button>
 
-<div id="chat-box">
-  <iframe
+<!-- CHAT -->
+<div id="chat-wrapper">
+  <iframe id="chat-frame"
     src="https://cdn.botpress.cloud/webchat/v3.5/shareable.html?configUrl=https://files.bpcontent.cloud/2025/12/10/10/20251210104150-LYDGDTXZ.json"
-    style="width:100%; height:100%; border:none;"
-    allow="microphone"
-  ></iframe>
+    allow="microphone">
+  </iframe>
+  <button class="secondary" onclick="clearChat()">Clear Chat</button>
 </div>
 
 <script>
-  function toggleChat(){
-    const box = document.getElementById('chat-box');
-    box.style.display = box.style.display === 'block' ? 'none' : 'block';
+  function showMenu(id) {
+    document.getElementById('drinks').classList.add('hidden');
+    document.getElementById('food').classList.add('hidden');
+    document.getElementById(id).classList.remove('hidden');
   }
 
-  function reserve(){
-    document.getElementById('reservationMessage').style.display = 'block';
+  function reserve() {
+    document.getElementById('reserve-msg').innerText = "Your reservation has been received ✅";
   }
 
-  function cancel(){
-    document.getElementById('reservationMessage').style.display = 'none';
-    alert('Reservation cancelled');
+  function toggleChat() {
+    const chat = document.getElementById('chat-wrapper');
+    chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
   }
 
-  const menus = {
-    hot: [
-      {name:'Latte', price:'$4.50', img:'https://images.unsplash.com/photo-1511920170033-f8396924c348'},
-      {name:'Cappuccino', price:'$4.00', img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93'}
-    ],
-    cold: [
-      {name:'Iced Coffee', price:'$4.00', img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085'}
-    ],
-    fresh: [
-      {name:'Orange Juice', price:'$5.00', img:'https://images.unsplash.com/photo-1577801599718-f4e3ad3fc794'}
-    ],
-    dessert: [
-      {name:'Cheesecake', price:'$6.00', img:'https://images.unsplash.com/photo-1542826438-bd32f43d626f'}
-    ],
-    sandwich: [
-      {name:'Chicken Sandwich', price:'$8.50', img:'https://images.unsplash.com/photo-1550547660-d9450f859349'}
-    ]
-  };
-
-  function showMenu(type){
-    const container = document.getElementById('menuContent');
-    container.innerHTML = '';
-    menus[type].forEach(item=>{
-      container.innerHTML += `
-        <div class="menu-item">
-          <img src="${item.img}">
-          <h4>${item.name}</h4>
-          <span>${item.price}</span>
-        </div>
-      `;
-    });
+  function clearChat() {
+    const frame = document.getElementById('chat-frame');
+    const src = frame.src;
+    frame.src = src; // reload iframe = clear chat
   }
 </script>
 
 </body>
 </html>
+
+    
